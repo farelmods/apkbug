@@ -44,7 +44,7 @@ const app = express();
 // ✅ Allow semua origin
 app.use(cors());
 
-const ownerIds = [7890825241]; // contoh chat_id owner
+const ownerIds = [OwnerId]; // contoh chat_id owner
 
 
 const sessions = new Map();
@@ -531,24 +531,33 @@ bot.command("start", async (ctx) => {
     "https://t.me/newalteir"
   );
 
-  // Kirim pesan dengan foto terlebih dahulu
-  await ctx.replyWithPhoto(
-    { url: "https://files.catbox.moe/sx6bsh.jpg" },
-    {
-      caption: teks,
-      parse_mode: "HTML",
-      reply_markup: keyboard,
-    }
-  );
+  try {
+    // Kirim pesan dengan foto terlebih dahulu
+    await ctx.replyWithPhoto(
+      { url: "https://placehold.co/600x400" },
+      {
+        caption: teks,
+        parse_mode: "HTML",
+        reply_markup: keyboard,
+      }
+    );
+  } catch (e) {
+    console.error("Failed to send photo:", e);
+    await ctx.reply(teks, { parse_mode: "HTML", reply_markup: keyboard });
+  }
 
-  // Kirim audio setelah pesan
-  await ctx.replyWithAudio(
-    { url: "https://files.catbox.moe/mdoxtb.mp3" }, // Ganti dengan URL audio yang diinginkan
-    {
-      caption: "🎵 CRITT",
-      parse_mode: "HTML"
-    }
-  );
+  try {
+    // Kirim audio setelah pesan
+    await ctx.replyWithAudio(
+      { url: "https://files.catbox.moe/mdoxtb.mp3" }, // Ganti dengan URL audio yang diinginkan
+      {
+        caption: "🎵 CRITT",
+        parse_mode: "HTML"
+      }
+    );
+  } catch (e) {
+    console.error("Failed to send audio:", e);
+  }
 });
 
 
@@ -874,7 +883,7 @@ bot.command("addacces", (ctx) => {
     return ctx.reply("[ ! ] - ACESSO SOMENTE PARA O DONO\n—Por favor, registre-se primeiro para acessar este recurso.");
   }
 
-  if (!id) return ctx.reply("✗ Falha\n\nExample : /addacces 7066156416", { parse_mode: "HTML" });
+  if (!id) return ctx.reply("✗ Falha\n\nExample : /addacces 7890825241", { parse_mode: "HTML" });
 
   const data = loadAkses();
   if (data.akses.includes(id)) return ctx.reply("✓ User already has access.");
@@ -892,7 +901,7 @@ bot.command("delacces", (ctx) => {
     return ctx.reply("[ ! ] - ACESSO SOMENTE PARA O DONO\n—Por favor, registre-se primeiro para acessar este recurso.");
   }
 
-  if (!id) return ctx.reply("✗ Falha\n\nExample : /delacces 7066156416", { parse_mode: "HTML" });
+  if (!id) return ctx.reply("✗ Falha\n\nExample : /delacces 7890825241", { parse_mode: "HTML" });
 
   const data = loadAkses();
   if (!data.akses.includes(id)) return ctx.reply("✗ User not found.");
@@ -910,7 +919,7 @@ bot.command("addowner", (ctx) => {
     return ctx.reply("[ ! ] - ACESSO SOMENTE PARA O DONO\n—Por favor, registre-se primeiro para acessar este recurso.");
   }
 
-  if (!id) return ctx.reply("✗ Falha\n\nExample : /addowner 7066156416", { parse_mode: "HTML" });
+  if (!id) return ctx.reply("✗ Falha\n\nExample : /addowner 7890825241", { parse_mode: "HTML" });
 
   const data = loadAkses();
   if (data.owners.includes(id)) return ctx.reply("✗ Already an owner.");
@@ -928,7 +937,7 @@ bot.command("delowner", (ctx) => {
   if (!isOwner(userId)) {
     return ctx.reply("[ ! ] - ACESSO SOMENTE PARA O DONO\n—Por favor, registre-se primeiro para acessar este recurso.");
   }
-  if (!id) return ctx.reply("✗ Falha\n\nExample : /delowner 7066156416", { parse_mode: "HTML" });
+  if (!id) return ctx.reply("✗ Falha\n\nExample : /delowner 7890825241", { parse_mode: "HTML" });
 
   const data = loadAkses();
 
@@ -1171,7 +1180,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-  const filePath = path.join(__dirname, "dewa_verse", "websitev_4.html");
+  const filePath = path.join(__dirname, "invirusblast", "websitev_4.html");
   fs.readFile(filePath, "utf8", (err, html) => {
     if (err) return res.status(500).send("✗ Gagal baca Login.html");
     res.send(html);
@@ -1180,7 +1189,7 @@ app.get("/", (req, res) => {
 
 app.get("/login", (req, res) => {
   const msg = req.query.msg || "";
-  const filePath = path.join(__dirname, "dewa_verse", "websitev_4.html");
+  const filePath = path.join(__dirname, "invirusblast", "websitev_4.html");
   fs.readFile(filePath, "utf8", (err, html) => {
     if (err) return res.status(500).send("✗ Gagal baca file Login.html");
     res.send(html);
@@ -1214,7 +1223,7 @@ app.get("/execution", (req, res) => {
     console.log("Headers:", req.headers['accept']);
 
     const username = req.cookies.sessionUser;
-    const filePath = "./dewa_verse/websitev_4.html";
+    const filePath = "./invirusblast/websitev_4.html";
 
     fs.readFile(filePath, "utf8", (err, html) => {
       if (err) return res.status(500).send("✗ Gagal baca file Login.html");
@@ -1730,7 +1739,7 @@ const executionPage = (
       })
     : "-";
 
-  const filePath = path.join(__dirname, "dewa_verse", "dashboard.html");
+  const filePath = path.join(__dirname, "invirusblast", "dashboard.html");
 
   try {
     let html = fs.readFileSync(filePath, "utf8");
